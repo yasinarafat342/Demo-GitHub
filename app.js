@@ -1,22 +1,22 @@
-// ১. API Base URL
+
 const API_BASE = "https://phi-lab-server.vercel.app/api/v1/lab";
 
-// ২. পেজ লোড হওয়ার সাথে সাথে ডেটা আনা শুরু হবে
+
 document.addEventListener("DOMContentLoaded", () => {
     loadData("all");
 });
 
-// ৩. মেইন ডেটা লোড ফাংশন
+
 async function loadData(category = "all") {
     const loader = document.getElementById("loader");
     const container = document.getElementById("issueContainer");
     const stats = document.getElementById("issueStats");
 
-    // শুরুতে লোডার দেখানো এবং কন্টেইনার খালি করা (Loading spinner on data load)
+   
     if (loader) loader.classList.remove("hidden");
     if (container) container.innerHTML = ""; 
 
-    // ট্যাব এর ইউআই আপডেট করা (Show active button)
+
     updateTabUI(category);
 
     try {
@@ -26,19 +26,19 @@ async function loadData(category = "all") {
         
         const result = await response.json();
 
-        // এরর ফিক্স: এপিআই ডাটা অবজেক্ট বা অ্যারে যাই হোক না কেন তা হ্যান্ডেল করা
+        
         const issues = Array.isArray(result) ? result : (result.data || []);
 
-        // ক্যাটাগরি অনুযায়ী ফিল্টার (All, Open, or Closed)
+
         let filtered = issues;
         if (category !== "all") {
             filtered = issues.filter(item => item.status === category);
         }
 
-        // কয়টি ইস্যু পাওয়া গেল তা দেখানো (Fix: undefined issue)
+        
         if (stats) stats.innerText = `${filtered.length} Issues Found`;
 
-        // কার্ডগুলো স্ক্রিনে রেন্ডার করা
+     
         renderCards(filtered);
 
     } catch (error) {
@@ -47,12 +47,10 @@ async function loadData(category = "all") {
             container.innerHTML = `<p class="text-red-500 text-center col-span-4 font-bold">Failed to load data! Please try again.</p>`;
         }
     } finally {
-        // লোডার লুকানো (এটি মাস্ট রান করবে)
         if (loader) loader.classList.add("hidden");
     }
 }
 
-// ৪. ইস্যু কার্ড রেন্ডার করা (README রিকোয়ারমেন্ট অনুযায়ী)
 function renderCards(issues) {
     const container = document.getElementById("issueContainer");
     
@@ -62,7 +60,7 @@ function renderCards(issues) {
     }
 
     container.innerHTML = issues.map(issue => {
-        // রিকোয়ারমেন্ট: ওপেন হলে গ্রিন, ক্লোজড হলে পার্পল/ম্যাজেন্টা বর্ডার
+     
         const borderClass = issue.status === "open" ? "border-green-500" : "border-[#4f46e5]"; 
         
         return `
@@ -94,7 +92,6 @@ function renderCards(issues) {
     }).join("");
 }
 
-// ৫. সার্চ ফাংশন (Implement Search Functionality)
 async function handleSearch() {
     const searchInput = document.getElementById("searchInput");
     const query = searchInput.value.trim();
@@ -119,17 +116,15 @@ async function handleSearch() {
     }
 }
 
-// ৬. ট্যাব ইউআই হাইলাইট (Show active button)
+
 function updateTabUI(status) {
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.classList.remove("active-tab");
-        // অতিরিক্ত: ম্যাজেন্টা থিমের জন্য বর্ডার বা কালার কাস্টমাইজ করতে পারেন
     });
     const activeBtn = document.getElementById(`btn-${status}`);
     if (activeBtn) activeBtn.classList.add("active-tab");
 }
 
-// ৭. মডাল ওপেন (Single Issue Details)
 async function openModal(id) {
     const modal = document.getElementById("issueModal");
     const modalBody = document.getElementById("modalBody");
@@ -160,7 +155,6 @@ async function openModal(id) {
     }
 }
 
-// ৮. মডাল ক্লোজ
 function closeModal() {
     const modal = document.getElementById("issueModal");
     if (modal) {
