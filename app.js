@@ -36,7 +36,7 @@ async function loadData(category = "all") {
         }
 
         
-        if (stats) stats.innerText = `${filtered.length} Issues Found`;
+        if (stats) stats.innerText = `${filtered.length} Issues`;
 
      
         renderCards(filtered);
