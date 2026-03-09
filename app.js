@@ -26,7 +26,7 @@ async function loadData(category = "all") {
             filtered = issues.filter(item => item.status === category);
         }
 
-        // 'Found' লেখাটি বাদ দেওয়া হয়েছে
+        
         if (stats) stats.innerText = `${filtered.length} Issues`;
 
         renderCards(filtered);
@@ -85,17 +85,17 @@ async function handleSearch() {
     finally { if (loader) loader.classList.add("hidden"); }
 }
 
-// বাটন কালার করার লজিক
+
 function updateTabUI(status) {
     document.querySelectorAll(".tab-btn").forEach(btn => {
-        // আগের সব কালার রিমুভ করা
+  
         btn.classList.remove("bg-blue-600", "text-white", "border-blue-600", "active-tab");
         btn.classList.add("text-gray-500");
     });
 
     const activeBtn = document.getElementById(`btn-${status}`);
     if (activeBtn) {
-        // একটিভ বাটনে নীল কালার দেওয়া
+        
         activeBtn.classList.add("bg-blue-600", "text-white", "border-blue-600", "active-tab");
         activeBtn.classList.remove("text-gray-500");
     }
