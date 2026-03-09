@@ -1,21 +1,18 @@
 const API_BASE = "https://phi-lab-server.vercel.app/api/v1/lab";
 
-// ১. পেজ লোড হওয়ার সাথে সাথে ডেটা আনা
 document.addEventListener("DOMContentLoaded", () => {
   loadData("all");
 });
 
-// ২. মেইন ডাটা লোড ফাংশন (চ্যালেঞ্জ: লোডিং স্পিনার)
+
 async function loadData(category = "all") {
   const loader = document.getElementById("loader");
   const container = document.getElementById("issueContainer");
   const stats = document.getElementById("issueStats");
 
-  // শুরুতে লোডার দেখানো (Loading spinner on data load)
   if (loader) loader.classList.remove("hidden");
   if (container) container.innerHTML = "";
 
-  // অ্যাক্টিভ ট্যাব স্টাইল আপডেট করা
   updateTabUI(category);
 
   try {
@@ -25,7 +22,7 @@ async function loadData(category = "all") {
     const result = await response.json();
     const issues = Array.isArray(result) ? result : result.data || [];
 
-    // ক্যাটাগরি অনুযায়ী ফিল্টার (All, Open, Closed)
+
     let filtered = category === "all" ? issues : issues.filter((item) => item.status === category);
 
     if (stats) stats.innerText = `${filtered.length} Issues Found`;
@@ -35,12 +32,11 @@ async function loadData(category = "all") {
     console.error("Error:", error);
     if (container) container.innerHTML = `<p class="col-span-4 text-center text-red-500">Failed to load data!</p>`;
   } finally {
-    // ডেটা লোড শেষে লোডার হাইড করা
+
     if (loader) loader.classList.add("hidden");
   }
 }
 
-// ৩. কার্ড রেন্ডার (চ্যালেঞ্জ: গ্রিন এবং পার্পল টপ বর্ডার)
 function renderCards(issues) {
   const container = document.getElementById("issueContainer");
 
@@ -50,7 +46,6 @@ function renderCards(issues) {
   }
 
   container.innerHTML = issues.map((issue) => {
-      // রিকোয়ারমেন্ট: open হলে Green, closed হলে Purple বর্ডার
       const borderClass = issue.status === "open" ? "border-green-500" : "border-purple-500";
 
       return `
@@ -82,7 +77,6 @@ function renderCards(issues) {
     }).join("");
 }
 
-// ৪. সার্চ ফাংশন (Implement Search Functionality)
 async function handleSearch() {
   const query = document.getElementById("searchInput").value.trim();
   const loader = document.getElementById("loader");
@@ -104,7 +98,6 @@ async function handleSearch() {
   }
 }
 
-// ৫. ট্যাব আপডেট (Show active button on changing category names)
 function updateTabUI(status) {
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.classList.remove("active-tab");
@@ -113,7 +106,6 @@ function updateTabUI(status) {
   if (activeBtn) activeBtn.classList.add("active-tab");
 }
 
-// ৬. মডাল ফাংশন
 async function openModal(id) {
   const modal = document.getElementById("issueModal");
   try {
